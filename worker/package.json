@@ -1,0 +1,17 @@
+{
+    "name": "worker",
+    "version": "1.0.0",
+    "description": "Monitor redis and generate Fibonacci series",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "author": "SachchidanandY",
+    "license": "ISC",
+    "dependencies": {
+        "nodemon": "^2.0.12",
+        "redis": "^3.1.2"
+    }
+}
