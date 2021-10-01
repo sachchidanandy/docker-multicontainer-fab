@@ -1,0 +1,29 @@
+# Request sudo permission
+sudo: required
+
+# Services required
+services:
+  - docker
+
+# Create a image to run test on it. We can run create image of multiple services.
+before_install:
+  - docker build -t sachchidanandy/client-test -f ./client/DockerFile.dev ./client
+
+# Run test on image. We can run multiple test for images created above
+script:
+  - docker run -e CI=true sachchidanandy/client-test npm run test -- --coverage
+
+# on success create of test
+after_success:
+  # Create production build
+  - docker build -t sachchidanandy/multi-client ./client
+  - docker build -t sachchidanandy/multi-nginx ./nginx
+  - docker build -t sachchidanandy/multi-server ./server
+  - docker build -t sachchidanandy/multi-worker ./worker
+  # Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push images to docker hub
+  - docker push sachchidanandy/multi-client
+  - docker push sachchidanandy/multi-nginx
+  - docker push sachchidanandy/multi-server
+  - docker push sachchidanandy/multi-worker

@@ -9,15 +9,25 @@ function App() {
   const [input, setInput] = useState('');
 
   const fetchValues = async () => {
-    const values = await axios.get('/api/values/current');
+    try {
+      const values = await axios.get('/api/values/current');
 
-    setValues(values.data);
+      setValues(values.data);
+    } catch (error) {
+      console.error("Error while fetching Values: ", error);
+    }
+    
   };
 
   const fetchIndexes = async () => {
-    const indexes = await axios.get('/api/values/all');
+    try {
+      const indexes = await axios.get('/api/values/all');
 
-    setIndexes(indexes.data);
+      setIndexes(indexes.data);
+      
+    } catch (error) {
+      console.error("Error while fetching index: ", error);
+    }
   };
 
   const handleInputChange = event => {
@@ -27,7 +37,11 @@ function App() {
   const handleFormSubmit = async event => {
     event.preventDefault();
     if (!input) return null;
-    await axios.post('/api/values', {index: input});
+    try {
+      await axios.post('/api/values', {index: input});  
+    } catch (error) {
+      console.error("Error while submitting value");
+    }
     setInput('');
   };
 
@@ -51,6 +65,7 @@ function App() {
   return (
     <div className="App">
       <div className='form-container'>
+        <div>learn react</div>
         <form onSubmit={handleFormSubmit}>
           <label>Enter your index </label>
           <input name='index-input' onChange={handleInputChange} value={input} type='number'/>
